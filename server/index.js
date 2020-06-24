@@ -13,6 +13,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use("/api/posts", postsRoute);
 
+if (process.env.NODE_ENV === "production") {
+  //Static Folder
+  app.use(express.static(__dirname + "/public/"));
+
+  //Handle SPA
+  app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
+}
+
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });
